@@ -17,7 +17,7 @@ app.use("/api/posts", postRoutes);
 app.use("/api/users", userRoutes);
 
 // MONGODB CONNECTION
-mongoose.connect(mongodb://sai:sai@ac-wyefnns-shard-00-00.cp256s7.mongodb.net:27017,ac-wyefnns-shard-00-01.cp256s7.mongodb.net:27017,ac-wyefnns-shard-00-02.cp256s7.mongodb.net:27017/?ssl=true&replicaSet=atlas-yki2yi-shard-0&authSource=admin&appName=cluster5)
+mongoose.connect("mongodb://sai:sai@ac-wyefnns-shard-00-00.cp256s7.mongodb.net:27017,ac-wyefnns-shard-00-01.cp256s7.mongodb.net:27017,ac-wyefnns-shard-00-02.cp256s7.mongodb.net:27017/?ssl=true&replicaSet=atlas-yki2yi-shard-0&authSource=admin&appName=cluster5")
   .then(() => console.log("MongoDB Atlas connected"))
   .catch(err => console.log(err));
 
