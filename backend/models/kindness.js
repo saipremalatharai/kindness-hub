@@ -1,7 +1,8 @@
 const mongoose = require('mongoose');
 
 const kindnessSchema = new mongoose.Schema({
-  message: String,
+  title: String,
+  description: String,
   createdAt: {
     type: Date,
     default: Date.now
