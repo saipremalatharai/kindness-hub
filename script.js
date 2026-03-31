@@ -1,25 +1,20 @@
-const form = document.getElementById("form");
+async function loadPosts() {
+  const res = await fetch("https://kindness-hub.onrender.com/api/posts");
 
-form.addEventListener("submit", async (e) => {
-e.preventDefault();
+  const data = await res.json();
 
-const name = document.getElementById("name").value;
-const email = document.getElementById("email").value;
-const password = document.getElementById("password").value;
+  const container = document.getElementById("posts");
+  container.innerHTML = "";
 
-try {
-const res = await fetch("http://localhost:8244/api/users/signup", {
-method: "POST",
-headers: {
-"Content-Type": "application/json"
-},
-body: JSON.stringify({ name, email, password })
-});
-
-const data = await res.json();
-document.getElementById("message").innerText = data.message;
-
-} catch (error) {
-console.error(error);
+  data.forEach(post => {
+    const div = document.createElement("div");
+    div.innerHTML = `
+      <h3>${post.title}</h3>
+      <p>${post.description}</p>
+      <hr/>
+    `;
+    container.appendChild(div);
+  });
 }
-});
+
+loadPosts();

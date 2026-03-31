@@ -1,35 +1,126 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <title>Kindness Hub ❤️</title>
 </head>
-<body>  <h2>Register User</h2>  <form id="form">
-    <input type="text" id="name" placeholder="Name" required><br><br>
-    <input type="email" id="email" placeholder="Email" required><br><br>
-    <input type="password" id="password" placeholder="Password" required><br><br>
-    <button type="submit">Register</button>
-  </form>  <p id="message"></p>  <script>
-    const form = document.getElementById("form");
 
-    form.addEventListener("submit", async (e) => {
-      e.preventDefault();
+<body>
 
-      const name = document.getElementById("name").value;
-      const email = document.getElementById("email").value;
-      const password = document.getElementById("password").value;
+<h1>Kindness Hub ❤️</h1>
 
-      const res = await fetch("http://localhost:8244/api/users/signup", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ name, email, password })
-      });
+<!-- LOGIN -->
+<h2>Login</h2>
+<input type="email" id="loginEmail" placeholder="Email"><br><br>
+<input type="password" id="loginPassword" placeholder="Password"><br><br>
+<button onclick="login()">Login</button>
+<p id="loginMessage"></p>
 
-      const data = await res.json();
-      document.getElementById("message").innerText = data.message;
-    });
-  </script></body>
+<hr>
+
+<!-- REGISTER -->
+<h2>Register</h2>
+<input type="email" id="registerEmail" placeholder="Email"><br><br>
+<input type="password" id="registerPassword" placeholder="Password"><br><br>
+<button onclick="register()">Register</button>
+<p id="registerMessage"></p>
+
+<hr>
+
+<!-- ADD POST -->
+<h2>Add Help Post</h2>
+<form id="postForm">
+  <input type="text" id="title" placeholder="Title" required><br><br>
+  <input type="text" id="description" placeholder="Description" required><br><br>
+  <button type="submit">Post</button>
+</form>
+<p id="postMessage"></p>
+
+<hr>
+
+<!-- SHOW POSTS -->
+<h2>All Posts</h2>
+<ul id="postsList"></ul>
+
+<!-- SCRIPT -->
+<script>
+
+const API = "https://kindness-hub.onrender.com";
+
+// LOGIN
+async function login() {
+  const email = document.getElementById("loginEmail").value;
+  const password = document.getElementById("loginPassword").value;
+
+  const res = await fetch(`${API}/api/users/login`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ email, password })
+  });
+
+  const data = await res.json();
+  document.getElementById("loginMessage").innerText = data.message;
+}
+
+// REGISTER
+async function register() {
+  const email = document.getElementById("registerEmail").value;
+  const password = document.getElementById("registerPassword").value;
+
+  const res = await fetch(`${API}/api/users/register`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ email, password })
+  });
+
+  const data = await res.json();
+  document.getElementById("registerMessage").innerText = data.message;
+}
+
+// ADD POST
+document.getElementById("postForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const title = document.getElementById("title").value;
+  const description = document.getElementById("description").value;
+
+  const res = await fetch(`${API}/api/posts`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ title, description })
+  });
+
+  const data = await res.json();
+  document.getElementById("postMessage").innerText = data.message;
+
+  loadPosts();
+});
+
+// LOAD POSTS
+async function loadPosts() {
+  const res = await fetch(`${API}/api/posts`);
+  const posts = await res.json();
+
+  const list = document.getElementById("postsList");
+  list.innerHTML = "";
+
+  posts.forEach(post => {
+    const li = document.createElement("li");
+    li.innerText = post.title + " - " + post.description;
+    list.appendChild(li);
+  });
+}
+
+// AUTO LOAD
+loadPosts();
+
+</script>
+
+</body>
 </html>
-
-
